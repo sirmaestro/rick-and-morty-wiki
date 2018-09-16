@@ -36,9 +36,11 @@ export default class SearchBar extends React.Component<{}, IState> {
             <div>
                 <Grid container={true} xs={12} justify={'center'}>
                     <Grid container={true} xs={12} justify={'center'}>
-                        <Grid item={true} xs={4}>
+                        <Grid item={true} xs={4} style={{padding: 20}}>
                             <Input
-                                placeholder="Enter game name"
+                                autoFocus={true}
+                                style={{height:50, fontSize: 20}}
+                                placeholder="Enter character name"
                                 inputProps={{
                                     'aria-label': 'Description',
                                 }}
@@ -49,7 +51,7 @@ export default class SearchBar extends React.Component<{}, IState> {
                                 <Grid item={true}>
                                     {this.state.loading ? <CircularProgress thickness={3} /> : (
                                         this.state.error !== "" ? <p>An error occured, please try again later.</p> : (
-                                            (this.state.characters.characters === null || typeof this.state.characters.characters === 'undefined') ? <p>Please type in a game and press enter.</p> :
+                                            (this.state.characters.characters === null || typeof this.state.characters.characters === 'undefined') ? <p>Enter a character to want to find</p> :
                                                 ""
                                         )
                                     )}
