@@ -17,10 +17,11 @@ interface IState {
     loading: boolean
 }
 
-export default class CharacterCard extends React.Component<{ character: any }, IState>{
+export default class CharacterCard extends React.Component<{ characterId: any }, IState>{
     public render() {
-        const { character } = this.props
-
+        const { characterId } = this.props
+        // tslint:disable-next-line:no-console
+        console.log(characterId);
         return (
             <div className="character">
                 <button
@@ -28,11 +29,11 @@ export default class CharacterCard extends React.Component<{ character: any }, I
                     className="character_sprite"
                     style={{
                         backgroundImage: `url(${`https://rickandmortyapi.com/api/character/avatar/${
-                            character.id
+                            characterId.id
                             }.jpeg`})`
                     }}
                 />
-                <p className="character_name">{character.name}</p>
+                <p className="character_name">{characterId.name}</p>
             </div>
         )
 

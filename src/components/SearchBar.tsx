@@ -24,6 +24,14 @@ export default class SearchBar extends React.Component<{}, IState> {
     }
 
     public render() {
+        // (this.state.characters === null || typeof this.state.characters === 'undefined') ? {const newCharacters = this.state.characters.map((character: any) => {
+        //     return (
+        //       <li className="pokemons__item" key={character.id}>
+        //         <CharacterCard character={character}/>
+        //       </li>
+        //     )
+        // })} : null
+
         return (
             <div>
                 <Grid container={true} xs={12} justify={'center'}>
@@ -41,7 +49,7 @@ export default class SearchBar extends React.Component<{}, IState> {
                                 <Grid item={true}>
                                     {this.state.loading ? <CircularProgress thickness={3} /> : (
                                         this.state.error !== "" ? <p>An error occured, please try again later.</p> : (
-                                            this.state.characters.length === 0 ? <p>Please type in a game and press enter.</p> :
+                                            (this.state.characters === null || typeof this.state.characters === 'undefined') ? <p>Please type in a game and press enter.</p> :
                                                 ""
                                         )
                                     )}
@@ -53,11 +61,14 @@ export default class SearchBar extends React.Component<{}, IState> {
                     <Grid item={true} xs={12}>
                         {this.state.loading ? "" : (
                             this.state.error !== "" ? "" : (
-                                this.state.characters.length === 0 ? "" :
+                                (this.state.characters === null || typeof this.state.characters === 'undefined') ? "" :
                                     <Grid container={true} spacing={40}>
-                                        {this.state.characters.map((gameId: any) => (
-                                            <CharacterCard character={null}/>
-                                        ))}
+                                        {
+                                            this.state.characters.forEach((element: any) => {
+                                                return <CharacterCard key={element.index} characterId={element.id}/>
+                                            })/* {this.state.characters.map((character: any) => (
+                                            <CharacterCard key={character.index} characterId={character.id}/>
+                                        ))} */}
                                     </Grid>
                             )
                         )}
@@ -70,15 +81,20 @@ export default class SearchBar extends React.Component<{}, IState> {
     private updateInputValue(evt: any) {
         if (evt.key === 'Enter') {
             this.setState({ loading: true });
+            const characters = this.getCharacters(evt.target.value);
+            // tslint:disable-next-line:no-console
+            console.log(characters);
             this.setState({
                 error: "",
-                characters: []
+                characters: {characters},
+                loading: false,
             });
-            this.getGameIds(evt.target.value);
+            // tslint:disable-next-line:no-console
+            console.log(this.state.characters);
         }
     }
 
-    private getGameIds(userInput: string) {
+    private getCharacters(userInput: string) {
         fetch('https://rickandmortyapi.com/api/character/?name=' + userInput, {
             method: 'GET'
         }).then((response) => {
@@ -89,11 +105,12 @@ export default class SearchBar extends React.Component<{}, IState> {
         })
         .then(data => {
             const characters = data.results.map((character: any) => {
-                // tslint:disable-next-line:no-console
-                console.log(character);
+                return character;
             })
             // tslint:disable-next-line:no-console
             console.log(characters);
+            return characters;
+            
         })
     }
 }

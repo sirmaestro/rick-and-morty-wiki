@@ -1,2 +1,3 @@
-# rick-and-morty-wiki
-A front-end website that allows users to find Rick &amp; Morty characters
+## Game Db React Application
+This is an applicaiton built using React with TypeScript for MSA 2018.
+To run, use the comand 'npm start'. 
