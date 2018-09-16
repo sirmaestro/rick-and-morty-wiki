@@ -49,7 +49,7 @@ export default class SearchBar extends React.Component<{}, IState> {
                                 <Grid item={true}>
                                     {this.state.loading ? <CircularProgress thickness={3} /> : (
                                         this.state.error !== "" ? <p>An error occured, please try again later.</p> : (
-                                            (this.state.characters === null || typeof this.state.characters === 'undefined') ? <p>Please type in a game and press enter.</p> :
+                                            (this.state.characters.characters === null || typeof this.state.characters.characters === 'undefined') ? <p>Please type in a game and press enter.</p> :
                                                 ""
                                         )
                                     )}
@@ -61,14 +61,11 @@ export default class SearchBar extends React.Component<{}, IState> {
                     <Grid item={true} xs={12}>
                         {this.state.loading ? "" : (
                             this.state.error !== "" ? "" : (
-                                (this.state.characters === null || typeof this.state.characters === 'undefined') ? "" :
+                                (this.state.characters.characters === null || typeof this.state.characters.characters === 'undefined') ? "" :
                                     <Grid container={true} spacing={40}>
-                                        {
-                                            this.state.characters.forEach((element: any) => {
-                                                return <CharacterCard key={element.index} characterId={element.id}/>
-                                            })/* {this.state.characters.map((character: any) => (
-                                            <CharacterCard key={character.index} characterId={character.id}/>
-                                        ))} */}
+                                        {this.state.characters.characters.map((character: any) => (
+                                            <CharacterCard key={character.index} characterId={character.id} characterName={character.name}/>
+                                        ))}
                                     </Grid>
                             )
                         )}
@@ -81,21 +78,17 @@ export default class SearchBar extends React.Component<{}, IState> {
     private updateInputValue(evt: any) {
         if (evt.key === 'Enter') {
             this.setState({ loading: true });
-            const characters = this.getCharacters(evt.target.value);
-            // tslint:disable-next-line:no-console
-            console.log(characters);
-            this.setState({
-                error: "",
-                characters: {characters},
-                loading: false,
-            });
+            this.getCharacters(evt.target.value);
+
             // tslint:disable-next-line:no-console
             console.log(this.state.characters);
+            // tslint:disable-next-line:no-console
+            console.log(typeof(this.state.characters));
         }
     }
 
     private getCharacters(userInput: string) {
-        fetch('https://rickandmortyapi.com/api/character/?name=' + userInput, {
+        return fetch('https://rickandmortyapi.com/api/character/?name=' + userInput, {
             method: 'GET'
         }).then((response) => {
             if (response.ok) {
@@ -107,6 +100,11 @@ export default class SearchBar extends React.Component<{}, IState> {
             const characters = data.results.map((character: any) => {
                 return character;
             })
+            this.setState({
+                error: "",
+                characters: {characters},
+                loading: false,
+            });
             // tslint:disable-next-line:no-console
             console.log(characters);
             return characters;
