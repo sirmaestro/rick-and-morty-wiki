@@ -26,7 +26,7 @@ export default class CharacterCard extends React.Component<{ characterId: any, c
             <Grid item={true} sm={6} md={4} lg={3}>
                 <Card className="card" style={{ height: 'auto', overflow: 'auto' }}>
                     <CardMedia
-                        style={{ height: 300 }}
+                        style={{ height: 400 }}
                         image={`https://rickandmortyapi.com/api/character/avatar/${characterId}.jpeg`}
                     />
                     <CardContent>
